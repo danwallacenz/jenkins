@@ -1,8 +1,6 @@
-README.md
+# Create a Failure-proof Jenkins on MacOS
 
-*Create a Failure-proof Jenkins on MacOS
-
-*** Prerequisites
+### Prerequisites
     * Docker for Mac
     * VirtualBox
     * Git
