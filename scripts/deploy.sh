@@ -59,7 +59,7 @@ while true; do
         break
     else
         echo "Waiting for the Jenkins service..."
-        sleep 5
+        sleep 10
     fi
 done
 

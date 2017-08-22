@@ -35,3 +35,32 @@ scripts/buid-push-myjenkins-image.sh
 
 curl $(docker-machine ip node1):5000/v2/_catalog 
 ```
+
+*** Deploy Everything to the Swarm
+
+You'll need to edit the ```deploy.sh``` script to alter the Jenkins username and password.
+TODO put them in environment variables.
+
+```bash
+scripts/deploy.sh
+```
+
+After deploying Jenkins to the cluster, its console should open. Log in with the credential you supplied earlier.
+
+*** Deploy a Visualization Tool
+
+```bash
+scripts/deploy-visualizer.sh
+```
+
+*** Testing Failover
+
+
+
+
+
+
+
+
+
+
