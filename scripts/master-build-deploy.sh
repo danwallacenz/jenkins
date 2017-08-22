@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-cd scripts
+eval $(docker-machine env node1)
 
-# ./download-tag-push-images.sh
-
-
-# ./build-push-myjenkins-image.sh
+#scripts/download-tag-push-images.sh
 
 
-./deploy.sh
+#scripts/build-push-myjenkins-image.sh
 
-cd ..
+
+scripts/deploy.sh
+

@@ -17,7 +17,7 @@ eval $(docker-machine env node1)
 
 
 # ### 1. Deploy Registry
-docker stack deploy -c registry.yml registry
+# docker stack deploy -c ../registry.yml registry
 
 
 ### 2. Create network 
@@ -69,7 +69,7 @@ done
 
 
 ### Open Jenkins console
-open "http://$CLUSTER_DNS/jenkins"
+open "http://$(docker-machine ip node1)/jenkins"
 
 
 # open "http://$CLUSTER_DNS/jenkins/exit"
