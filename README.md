@@ -77,7 +77,8 @@ scripts/chaos-monkey.sh
 
 Open the visualizer.
  ```bash
- open "http://$(docker-machine ip node1)/viz"
+ eval $(docker-machine ip node1)
+ open "http://$(docker-machine env node1)/viz"
  ```
  The Jenkins container artifact should disappear - then reappear while transitioning through states 'preparing', then 'starting', and finally 'running' and green. It may not be on the same node as it was before.
 
