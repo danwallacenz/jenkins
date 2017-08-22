@@ -15,7 +15,12 @@
 CLUSTER_DNS=$(docker-machine ip node1)
 CLUSTER_IP=$(docker-machine ip node1)
 
-# ### 2. Add Docker Flow Proxy 
+
+# ### 2. Add Registry
+docker stack deploy -c registry.yml registry
+
+
+# ### 3. Add Docker Flow Proxy 
 # eval $(docker-machine env node1)
 # docker network create -d overlay proxy
 # docker stack deploy -c docker-flow-proxy.yml proxy
@@ -26,14 +31,14 @@ while true; do
         break
     else
         echo "Waiting for the Proxy service..."
-        sleep 5
+        sleep 10
     fi
 done
 
 docker stack ps proxy
 
 
-### 3. Create Jenkins Docker image 
+### 4. Create Jenkins Docker image 
 
 #image/create-docker-image.sh
 
@@ -48,7 +53,7 @@ docker stack ps proxy
 eval $(docker-machine env node1)
 
 
-### 4. Deploy Jenkins
+### 5. Deploy Jenkins
 
 echo "admin" | docker secret create jenkins-user -
 echo "admin" | docker secret create jenkins-pass -
@@ -68,7 +73,7 @@ while true; do
         break
     else
         echo "Waiting for the Jenkins service..."
-        sleep 5
+        sleep 10
     fi
 done
 
@@ -80,6 +85,8 @@ echo '$ eval $(docker-machine env node1)'
 echo 'repeat... $ docker stack ps jenkins'
 
 open "http://$CLUSTER_DNS/jenkins"
+
+# open "http://$(docker-machine ip node1)/jenkins"
 
 # open "http://$CLUSTER_DNS/jenkins/exit"
 

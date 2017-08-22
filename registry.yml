@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  main:
+    image: registry:2.5.0
+    restart: always
+    ports:
+      - "5000:5000"
+    networks:
+      - proxy
+    volumes:
+      - .:/var/lib/registry
+    deploy:
+      resources:
+        reservations:
+          memory: 100M
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.port=5000
+        - com.df.serviceDomain=${DOMAIN}
+
+networks:
+  proxy:
+    external: true

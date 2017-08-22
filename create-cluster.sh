@@ -12,6 +12,7 @@ done
 
 eval $(docker-machine env node1)
 
+## TODO: Fixed advertise-addr for machine reboots
 docker swarm init \
   --advertise-addr $(docker-machine ip node1)
 
