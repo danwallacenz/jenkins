@@ -20,10 +20,6 @@ eval $(docker-machine env node1)
 # docker stack deploy -c ../registry.yml registry
 
 
-### 2. Create network 
-docker network create -d overlay proxy
-
-
 ### 2. Deploy Docker Flow Proxy & Swarm Listener
 docker stack deploy -c docker-flow-proxy.yml proxy
 

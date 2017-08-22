@@ -24,6 +24,9 @@ docker image ls -f=reference='localhost:5000/*:*'
 
 REGISTRY_UP=false
 
+### Create network 
+docker network create -d overlay proxy
+
 docker stack deploy -c registry.yml registry
 while true; do
     REPLICAS=$(docker service ls | grep registry_main | awk '{print $4}')
@@ -32,7 +35,7 @@ while true; do
         break
     else
         echo "Waiting for the Registry service..."
-        sleep 2
+        sleep 10
     fi
 done
 
