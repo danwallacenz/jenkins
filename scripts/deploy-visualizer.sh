@@ -13,4 +13,5 @@ while true; do
     fi
 done
 
-open "http://$(docker-machine ip node1):8081"
+# open "http://$(docker-machine ip node1):8081"
+open "http://$(docker-machine ip node1)/viz"

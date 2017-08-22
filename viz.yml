@@ -4,6 +4,22 @@ services:
   viz:
     image: localhost:5000/visualizer:${TAG:-latest}
     volumes:
-    - "/var/run/docker.sock:/var/run/docker.sock"
+        - "/var/run/docker.sock:/var/run/docker.sock"
     ports:
-    - "8081:8080"
+        - 5000:8080
+    environment:
+        - "CTX_ROOT=/viz"
+    networks:
+        - proxy
+    deploy:
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/viz
+        - com.df.port=5000
+
+networks:
+  default:
+    external: false
+  proxy:
+    external: true
