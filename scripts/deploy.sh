@@ -8,26 +8,25 @@
 
 # ./create-cluster.sh
 
-# # Enter the cluster
-# eval $(docker-machine env node1)
-# docker node ls
+docker node ls
 
 CLUSTER_DNS=$(docker-machine ip node1)
-CLUSTER_IP=$(docker-machine ip node1)
 
-
-# ### 2. Add Registry
-# docker stack deploy -c registry.yml registry
-
-
-# ### 3. Add Docker Flow Proxy 
+# Attach to a DM in the cluster
 eval $(docker-machine env node1)
+
+
+# ### 1. Deploy Registry
+docker stack deploy -c registry.yml registry
+
+
+### 2. Create network 
 docker network create -d overlay proxy
 
-docker pull localhost:5000/docker-flow-proxy
-docker pull localhost:5000/docker-flow-swarm-listener
 
+### 2. Deploy Docker Flow Proxy & Swarm Listener
 docker stack deploy -c docker-flow-proxy.yml proxy
+
 while true; do
     PROXY_REPLICAS=$(docker service ls | grep proxy_proxy | awk '{print $4}')
     SWARM_LISTENER_REPLICAS=$(docker service ls | grep proxy_swarm-listener | awk '{print $4}')
@@ -39,22 +38,6 @@ while true; do
     fi
 done
 
-docker stack ps proxy
-
-
-### 4. Create Jenkins Docker image 
-
-#image/create-docker-image.sh
-
-# Exit the cluster
-# eval $(docker-machine env -u)
-# DOCKER_HUB_USER=danwallacenz
-# TAG=setup
-# docker image build -t $DOCKER_HUB_USER/jenkins:$TAG .
-# docker image push $DOCKER_HUB_USER/jenkins:$TAG
-
-# # Re-enter the cluster
-eval $(docker-machine env node1)
 
 
 ### 5. Deploy Jenkins
@@ -71,29 +54,23 @@ export REGISTRY=localhost:5000
 # Map /var/jenkins_home in every container to docker/jenkins
 mkdir -p  docker/jenkins
 
-docker pull localhost:5000/myjenkins
 
 docker stack deploy -c jenkins.yml jenkins
+
 while true; do
     REPLICAS=$(docker service ls | grep jenkins_main | awk '{print $4}')
     if [[ $REPLICAS == "1/1" ]]; then
         break
     else
         echo "Waiting for the Jenkins service..."
-        sleep 10
+        sleep 5
     fi
 done
 
-docker stack ps myjenkins
 
-echo ''
-echo 'Wait until the Jenkins is running'
-echo '$ eval $(docker-machine env node1)'
-echo 'repeat... $ docker stack ps jenkins'
-
+### Open Jenkins console
 open "http://$CLUSTER_DNS/jenkins"
 
-# open "http://$(docker-machine ip node1)/jenkins"
 
 # open "http://$CLUSTER_DNS/jenkins/exit"
 
