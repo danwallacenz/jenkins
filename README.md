@@ -18,6 +18,7 @@ Forward local Docker commands to the Docker machines in the swarm.
 eval $(docker-machine env node1)
 ```
 
+Take a quick look.
 ```bash
 docker node ls
 ```
@@ -34,7 +35,7 @@ curl $(docker-machine ip node1):5000/v2/_catalog
 
 ## Create an Enhanced Jenkins Docker Image
 ```bash
-scripts/buid-push-myjenkins-image.sh
+scripts/build-push-myjenkins-image.sh
 
 curl $(docker-machine ip node1):5000/v2/_catalog 
 ```
@@ -67,7 +68,18 @@ scripts/deploy-visualizer.sh
 
 ## Testing Failover
 
-Open the Visualizer ```open "http://$(docker-machine ip node1)/viz"```
+```bash
+scripts/chaos-monkey.sh
+```
+
+Open the visualizer.
+ ```bash
+ open "http://$(docker-machine ip node1)/viz"
+ ```
+ The Jenkins container artifact should disappear - then reappear while transitioning through states 'preparing', then 'starting', and finally 'running' and green. It may not be on the same node as it was before.
+
+ This demonstrates that if Jenkins fails, it will be rescheduled by the swarm management system.
+ We cannot achieve zero downtime due to its stateful nature.
 
 
 
