@@ -57,7 +57,10 @@ scripts/deploy.sh
 
 After deploying Jenkins to the cluster, its console should open. Log in with the credential you supplied earlier.
 
-You can open it later by ```open "http://$(docker-machine ip node1)/jenkins"```
+You can open it later by:
+```bash
+open "http://$(docker-machine ip node1)/jenkins"
+```
 
 
 ## Deploy a Visualization Tool
