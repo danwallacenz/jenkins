@@ -13,9 +13,14 @@ In Docker Swarm terms, they'll all be "manager" nodes.
 
 ```bash
 scripts/create-cluster.sh
+````
 
+Forward local Docker commands to the Docker machines in the swarm.
+```bash
 eval $(docker-machine env node1)
+```
 
+```bash
 docker node ls
 ```
 
@@ -38,14 +43,23 @@ curl $(docker-machine ip node1):5000/v2/_catalog
 
 *** Deploy Everything to the Swarm
 
-You'll need to edit the ```deploy.sh``` script to alter the Jenkins username and password.
-TODO put them in environment variables.
+You'll need to set a couple of environment variables.
+```bash
+export JENKINS_USER=myname
+export JENKINS_PASS=password
+```
+
+Otherwise these will default to admin/admin.
+
 
 ```bash
 scripts/deploy.sh
 ```
 
 After deploying Jenkins to the cluster, its console should open. Log in with the credential you supplied earlier.
+
+You can open it later by ```open "http://$(docker-machine ip node1)/jenkins"```
+
 
 *** Deploy a Visualization Tool
 
@@ -54,6 +68,9 @@ scripts/deploy-visualizer.sh
 ```
 
 *** Testing Failover
+
+Open the Visualizer ```open "http://$(docker-machine ip node1)/viz"```
+
 
 
 

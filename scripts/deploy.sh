@@ -34,12 +34,10 @@ while true; do
     fi
 done
 
-
-
 ### 5. Deploy Jenkins
 
-echo "admin" | docker secret create jenkins-user -
-echo "admin" | docker secret create jenkins-pass -
+echo ${JENKINS_USER:-admin} | docker secret create jenkins-user -
+echo ${JENKINS_PASS:-admin} | docker secret create jenkins-pass -
 
 docker secret ls
 
