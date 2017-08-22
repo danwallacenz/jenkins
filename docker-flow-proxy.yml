@@ -1,14 +1,13 @@
 version: "3"
 
 networks:
-
   proxy:
     external: true
 
 services:
 
   proxy:
-    image: vfarcic/docker-flow-proxy:${TAG:-latest}
+    image: localhost:5000/docker-flow-proxy:${TAG:-latest}
     ports:
       - 80:80
       - 443:443
@@ -22,7 +21,7 @@ services:
       replicas: 3
 
   swarm-listener:
-    image: vfarcic/docker-flow-swarm-listener
+    image: localhost:5000/docker-flow-swarm-listener
     networks:
       - proxy
     volumes:

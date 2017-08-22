@@ -1,5 +1,4 @@
-#FROM jenkins:2.60.2-alpine
-FROM localhost:5000/jenkins:2.60.2-alpine
+FROM localhost:5000/jenkins:latest
 
 # Whether to skip setup wizard
 ENV JAVA_OPTS="-Djenkins.install.runSetupWizard=false"

@@ -17,13 +17,17 @@ CLUSTER_IP=$(docker-machine ip node1)
 
 
 # ### 2. Add Registry
-docker stack deploy -c registry.yml registry
+# docker stack deploy -c registry.yml registry
 
 
 # ### 3. Add Docker Flow Proxy 
-# eval $(docker-machine env node1)
-# docker network create -d overlay proxy
-# docker stack deploy -c docker-flow-proxy.yml proxy
+eval $(docker-machine env node1)
+docker network create -d overlay proxy
+
+docker pull localhost:5000/docker-flow-proxy
+docker pull localhost:5000/docker-flow-swarm-listener
+
+docker stack deploy -c docker-flow-proxy.yml proxy
 while true; do
     PROXY_REPLICAS=$(docker service ls | grep proxy_proxy | awk '{print $4}')
     SWARM_LISTENER_REPLICAS=$(docker service ls | grep proxy_swarm-listener | awk '{print $4}')
@@ -60,11 +64,14 @@ echo "admin" | docker secret create jenkins-pass -
 
 docker secret ls
 
-export TAG=setup
-export HUB_USER=danwallacenz
+export TAG=
+# export REGISTRY=danwallacenz
+export REGISTRY=localhost:5000
 
 # Map /var/jenkins_home in every container to docker/jenkins
 mkdir -p  docker/jenkins
+
+docker pull localhost:5000/myjenkins
 
 docker stack deploy -c jenkins.yml jenkins
 while true; do
@@ -77,7 +84,7 @@ while true; do
     fi
 done
 
-docker stack ps jenkins
+docker stack ps myjenkins
 
 echo ''
 echo 'Wait until the Jenkins is running'
